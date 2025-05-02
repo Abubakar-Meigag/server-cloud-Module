@@ -1,7 +1,7 @@
 const pool = require("../database/db");
 
 const getVideos = async (req, res) => {
-      const query = 'SELECT * FROM videos';
+      const query = 'SELECT * FROM videos ORDER BY id DESC';
 
       try {
             const videos = await pool.query(query);
