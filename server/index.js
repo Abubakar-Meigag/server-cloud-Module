@@ -19,3 +19,13 @@ app.listen(port, () => {
 app.get("/", (req, res) => {
   res.send(`Welcome to cloud module server  ${port}`);
 });
+
+
+const getVideos = require("./end-points/getVideos");
+const postVideo = require("./end-points/postVideo");
+const deleteVideo = require("./end-points/deleteVideo");
+
+app.get("/api/videos", getVideos);
+app.post("/api/addVideos", postVideo);
+app.delete("/api/videos/:id", deleteVideo);
+
