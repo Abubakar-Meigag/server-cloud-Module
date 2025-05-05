@@ -11,8 +11,8 @@ const postVideo = async (req, res) => {
       }
 
       const query = `
-      INSERT INTO videos (title, youtubeId, thumbnailUrl, channelName)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO videos (title, youtubeId, thumbnailUrl, channelName, upvotes, downvotes, views)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *`;
       
       const values = [
@@ -20,6 +20,9 @@ const postVideo = async (req, res) => {
             youtubeId,
             `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`,
             "Added by User",
+            0, 
+            0, 
+            0, 
       ];
 
       try {
@@ -29,7 +32,7 @@ const postVideo = async (req, res) => {
                   data: newVideo.rows[0],
             });
       } catch (err) {
-            console.error(err);
+            console.error(err.message);
             res.status(500).json({
                   status: "error",
                   message: "Internal server error",
