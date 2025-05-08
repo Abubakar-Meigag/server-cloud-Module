@@ -18,5 +18,5 @@ app.listen(port, () => {
 });
 
 app.get("/", (req, res) => {
-  res.send(`Welcome to CYF cloud module server - backend server week 1 ${port}`);
+  res.send(`<h1> Welcome to CYF cloud module server - backend server week 1 </h1>`);
 });
