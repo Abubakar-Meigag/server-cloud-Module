@@ -39,18 +39,19 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
-      - name: Deploy to EC2
+      - name: Deploy to docker
         run: |
             ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-              cd /home/ec2-user/server-cloud-Module/server
+              cd /home/ec2-user/server-cloud-Module
               git pull origin main
             
               echo " Stopping old container"
-              docker stop $(docker ps -q --filter "ancestor=abubakarmeigag/server-cloud-module:latest") || true
-              docker rm $(docker ps -aq --filter "ancestor=abubakarmeigag/server-cloud-module:latest") || true
+              docker stop server-cloud-module || true
+              docker rm server-cloud-module || true
+              docker rmi abubakarmeigag/server-cloud-module:latest || true
 
               echo "Rebuilding Docker image"
-              docker build -t abubakarmeigag/server-cloud-module:latest .
+              docker build --no-cache -t abubakarmeigag/server-cloud-module:latest .
 
               echo "Starting new container"
               docker run -d -p 6006:6006 --name server-cloud-module abubakarmeigag/server-cloud-module:latest
