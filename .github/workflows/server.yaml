@@ -48,7 +48,7 @@ jobs:
               echo " Stopping old container"
               docker stop server-cloud-module || true
               docker rm server-cloud-module || true
-              docker rmi abubakarmeigag/server-cloud-module:latest || true
+              
 
               echo "Rebuilding Docker image"
               docker build --no-cache -t abubakarmeigag/server-cloud-module:latest .
