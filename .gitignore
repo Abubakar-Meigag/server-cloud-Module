@@ -134,3 +134,34 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Terraform working dirs and files
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+
+# Terraform variable files
+*.auto.tfvars
+terraform.tfvars
+
+# Terraform override files
+*.tfoverride
+
+# CLI configuration
+.terraformrc
+terraform.rc
+
+# Environment files
+.envrc
+
+# Editor + OS junk
+*.bak
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
