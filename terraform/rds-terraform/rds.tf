@@ -13,6 +13,11 @@ resource "aws_db_instance" "existing" {
   skip_final_snapshot     = true
   backup_retention_period = 0
   storage_encrypted       = false
+  
+  vpc_security_group_ids = [
+    "sg-004f60302a8d78348",
+    "sg-07c594a0bf91f982e"
+  ] 
   tags = {
     Name = "video-db"
   }   
