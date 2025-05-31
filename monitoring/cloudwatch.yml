@@ -1,0 +1,23 @@
+region: eu-west-1
+metrics:
+  - namespace: AWS/EC2
+    dimensions: [InstanceId]
+    metrics:
+      - name: CPUUtilization
+        statistics: [Average]
+      - name: NetworkIn
+        statistics: [Sum]
+      - name: NetworkOut
+        statistics: [Sum]
+
+  - namespace: AWS/RDS
+    dimensions: [DBInstanceIdentifier]
+    metrics:
+      - name: CPUUtilization
+        statistics: [Average]
+      - name: DatabaseConnections
+        statistics: [Average]
+      - name: ReadLatency
+        statistics: [Average]
+      - name: WriteLatency
+        statistics: [Average]
