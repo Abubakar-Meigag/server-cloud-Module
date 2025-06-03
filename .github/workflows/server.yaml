@@ -44,7 +44,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
           echo "Fixing Git safe directory"
           git config --global --add safe.directory /opt/ansible
-          
+
           echo "Navigating to project"
           cd /opt/ansible
 
@@ -59,7 +59,7 @@ jobs:
           docker rm server-cloud-module || true
 
           echo "Rebuilding Docker image"
-          cd server
+          cd /opt/ansible
           docker build --no-cache -t abubakarmeigag/server-cloud-module:latest .
 
           echo "Running container with DB_URL"
