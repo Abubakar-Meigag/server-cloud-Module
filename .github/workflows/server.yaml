@@ -39,13 +39,28 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
-      - name: Deploy with Ansible
+      - name: Deploy manually via SSH
         run: |
-            ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-              cd /opt/ansible/ansible-server-migration
-              git pull origin main
-              ansible-playbook -i "localhost," -c local site.yml
-            EOF
+          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+            echo "Navigating to project"
+            cd /opt/ansible/server-cloud-Module
+            git pull origin main
+
+            echo "Fetching DB_URL from SSM"
+            DB_URL=$(aws ssm get-parameter --name /app/DB_URL --with-decryption --region eu-west-1 --query "Parameter.Value" --output text)
+
+            echo "Stopping old container"
+            docker stop server-cloud-module || true
+            docker rm server-cloud-module || true
+
+            echo "Rebuilding Docker image"
+            docker build --no-cache -t abubakarmeigag/server-cloud-module:latest .
+
+            echo "Running container with DB_URL"
+            docker run -d -p 6006:6006 --name server-cloud-module \
+              -e DB_URL="$DB_URL" \
+              abubakarmeigag/server-cloud-module:latest
+          EOF
 
       - name: Remove GitHub Runner IP from EC2 SG
         if: always()

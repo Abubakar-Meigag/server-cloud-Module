@@ -1,4 +1,4 @@
-require("dotenv").config();
+// require("dotenv").config()
 const express = require("express");
 const app = express();
 const videoRoutes = require("./routes/videos");
@@ -12,6 +12,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use("/api/videos", videoRoutes);
 
+if (!process.env.DB_URL) {
+  throw new Error("DB_URL is not defined!");
+}
 
 app.listen(port, () => {
   console.log(`Server is running on Port: ${port}`);
