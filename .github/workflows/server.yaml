@@ -42,6 +42,9 @@ jobs:
       - name: Deploy manually via SSH
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+          echo "Fixing Git safe directory"
+          git config --global --add safe.directory /opt/ansible
+          
           echo "Navigating to project"
           cd /opt/ansible
 
