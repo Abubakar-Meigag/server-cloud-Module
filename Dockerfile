@@ -7,7 +7,7 @@ COPY server/package*.json ./
 RUN npm install
 
 COPY ./server .
-COPY server/.env .env
+# COPY server/.env .env
 
 EXPOSE 6006
 
