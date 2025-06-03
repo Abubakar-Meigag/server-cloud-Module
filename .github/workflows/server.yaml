@@ -42,24 +42,27 @@ jobs:
       - name: Deploy manually via SSH
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-            echo "Navigating to project"
-            cd /opt/ansible/server-cloud-Module
-            git pull origin main
+          echo "Navigating to project"
+          cd /opt/ansible
 
-            echo "Fetching DB_URL from SSM"
-            DB_URL=$(aws ssm get-parameter --name /app/DB_URL --with-decryption --region eu-west-1 --query "Parameter.Value" --output text)
+          echo "Pulling latest code"
+          git pull origin main
 
-            echo "Stopping old container"
-            docker stop server-cloud-module || true
-            docker rm server-cloud-module || true
+          echo "Fetching DB_URL from SSM"
+          DB_URL=$(aws ssm get-parameter --name /app/DB_URL --with-decryption --region eu-west-1 --query "Parameter.Value" --output text | sed 's/^DB_URL=//')
 
-            echo "Rebuilding Docker image"
-            docker build --no-cache -t abubakarmeigag/server-cloud-module:latest .
+          echo "Stopping old container"
+          docker stop server-cloud-module || true
+          docker rm server-cloud-module || true
 
-            echo "Running container with DB_URL"
-            docker run -d -p 6006:6006 --name server-cloud-module \
-              -e DB_URL="$DB_URL" \
-              abubakarmeigag/server-cloud-module:latest
+          echo "Rebuilding Docker image"
+          cd server
+          docker build --no-cache -t abubakarmeigag/server-cloud-module:latest .
+
+          echo "Running container with DB_URL"
+          docker run -d -p 6006:6006 --name server-cloud-module \
+            -e DB_URL="$DB_URL" \
+            abubakarmeigag/server-cloud-module:latest
           EOF
 
       - name: Remove GitHub Runner IP from EC2 SG
