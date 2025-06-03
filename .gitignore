@@ -165,3 +165,7 @@ Thumbs.db
 
 # VS Code
 .vscode/
+
+# Inside server-cloud-Module/ansible-server-migration/.gitignore
+hosts.ini
+ansible-server-migration/group_vars/all.yml

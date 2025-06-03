@@ -1,0 +1,56 @@
+- name: Migrate and configure old EC2
+  hosts: old_instance
+  become: true
+
+  tasks:
+    - name: Stop and disable Apache if running
+      service:
+        name: httpd
+        state: stopped
+        enabled: false
+      ignore_errors: true
+
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Ensure Nginx is started and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present
+    
+    - name: Start and enable Docker
+      service:
+        name: docker
+        state: started
+        enabled: true
+    
+    - name: Fetch DB_URL from SSM
+      command: >
+        aws ssm get-parameter
+        --name /app/DB_URL
+        --with-decryption
+        --region {{ aws_region }}
+      register: db_url_raw
+
+    - name: Extract DB_URL string
+      set_fact:
+        db_url_env: "{{ db_url_raw.stdout | from_json | json_query('Parameter.Value') }}"
+
+    - name: Run server-cloud-module container
+      docker_container:
+        name: server-cloud-module
+        image: abubakarmeigag/server-cloud-module:latest
+        state: started
+        restart_policy: always
+        published_ports:
+          - "6006:6006"
+        env:
+          DB_URL: "{{ db_url_env }}"
