@@ -1,5 +1,5 @@
-- name: Migrate and configure old EC2
-  hosts: old_instance
+- name: Migrate and configure EC2
+  hosts: ec2
   become: true
 
   tasks:
@@ -11,7 +11,7 @@
       ignore_errors: true
 
     - name: Install Nginx
-      yum:
+      package:
         name: nginx
         state: present
 
@@ -22,7 +22,7 @@
         enabled: true
 
     - name: Install Docker
-      yum:
+      package:
         name: docker
         state: present
     
