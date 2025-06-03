@@ -9,12 +9,12 @@ python3 -m ensurepip --upgrade
 pip3 install --upgrade pip
 pip3 install ansible boto3 botocore
 
-# Install AWS CLI v2 (if not already available)
+# Install AWS CLI 
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip -q awscliv2.zip
 ./aws/install
 
-# Clone your Ansible repo (replace with your actual repo URL)
+# Clone your Ansible repo
 git clone https://github.com/Abubakar-Meigag/server-cloud-Module.git /opt/ansible
 cd /opt/ansible/ansible-server-migration
 
