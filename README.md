@@ -71,22 +71,30 @@ server-cloud-Module/
    ```
 
    The server will start on `http://localhost:6006`.
+   
 
 ## 🐳 Docker Setup
 
-Ensure you have Docker and Docker Compose installed.
+Ensure you have **Docker** installed.
 
-1. **Build and run containers:**
+### 🔨 Build the Docker image:
 
-   ```bash
-   docker-compose up --build
-   ```
+```
+docker build -t abubakarmeigag/server-cloud-module:latest .
+````
 
-   This will start both the Node.js server and the PostgreSQL database.
+### 🚀 Run the container:
 
-2. **Access the application:**
+```bash
+docker run -d -p 6006:6006 --name server-cloud-module abubakarmeigag/server-cloud-module:latest
+```
 
-   The server will be accessible at `http://localhost:6006`.
+This command:
+
+* Runs the container in **detached mode** (`-d`)
+* Maps **host port `6006`** to **container port `6006`**
+* Names the container **`server-cloud-module`**
+
 
 ## 🔄 GitHub Actions CI/CD
 
