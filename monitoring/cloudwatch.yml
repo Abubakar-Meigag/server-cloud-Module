@@ -1,23 +1,67 @@
 region: eu-west-1
 metrics:
-  - namespace: AWS/EC2
-    dimensions: [InstanceId]
-    metrics:
-      - name: CPUUtilization
-        statistics: [Average]
-      - name: NetworkIn
-        statistics: [Sum]
-      - name: NetworkOut
-        statistics: [Sum]
+  - aws_namespace: AWS/EC2
+    aws_metric_name: CPUUtilization
+    dimensions:
+      - InstanceId: i-078128e4a05c31c73
+    period: 300
+    length: 600
+    statistics:
+      - Average
+    set_timestamp: false
 
-  - namespace: AWS/RDS
-    dimensions: [DBInstanceIdentifier]
-    metrics:
-      - name: CPUUtilization
-        statistics: [Average]
-      - name: DatabaseConnections
-        statistics: [Average]
-      - name: ReadLatency
-        statistics: [Average]
-      - name: WriteLatency
-        statistics: [Average]
+  - aws_namespace: AWS/EC2
+    aws_metric_name: NetworkIn
+    dimensions:
+      - InstanceId: i-078128e4a05c31c73
+    period: 300
+    length: 600
+    statistics:
+      - Sum
+
+  - aws_namespace: AWS/EC2
+    aws_metric_name: NetworkOut
+    dimensions:
+      - InstanceId: i-078128e4a05c31c73
+    period: 300
+    length: 600
+    statistics:
+      - Sum
+
+  # RDS metrics (updated format)
+  - aws_namespace: AWS/RDS
+    aws_metric_name: CPUUtilization
+    dimensions:
+      - DBInstanceIdentifier: video-db
+    period: 300
+    length: 600
+    statistics:
+      - Average
+    set_timestamp: false
+
+  - aws_namespace: AWS/RDS
+    aws_metric_name: DatabaseConnections
+    dimensions:
+      - DBInstanceIdentifier: video-db
+    period: 300
+    length: 600
+    statistics:
+      - Average
+
+  - aws_namespace: AWS/RDS
+    aws_metric_name: ReadLatency
+    dimensions:
+      - DBInstanceIdentifier: video-db
+    period: 300
+    length: 600
+    statistics:
+      - Average
+
+  - aws_namespace: AWS/RDS
+    aws_metric_name: WriteLatency
+    dimensions:
+      - DBInstanceIdentifier: video-db    # Changed format
+    period: 300
+    length: 600
+    statistics:
+      - Average

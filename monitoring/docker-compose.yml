@@ -32,9 +32,10 @@ services:
     container_name: cloudwatch_exporter
     volumes:
       - ./cloudwatch.yml:/config/config.yml
+      - /Users/bekomeigag/.aws:/root/.aws 
     ports:
       - "9106:9106"
-    command: --config.file=/config/config.yml
+    command: /config/config.yml
     restart: unless-stopped
 
 volumes:

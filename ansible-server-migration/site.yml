@@ -19,7 +19,7 @@
       service:
         name: nginx
         state: started
-        enabled: true
+        enabled: true  # Ensure Nginx starts on boot and when is reboot making sure it is running
 
     - name: Install Docker
       package:
